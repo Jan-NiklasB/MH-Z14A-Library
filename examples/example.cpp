@@ -4,7 +4,7 @@
 MHZ14A sensor(Serial1, Serial);                                                                     //Creating instance of MHZ14A class
 
 void setup() {
-  Serial.begin(115200);                                                                             //Initialising Serialclass for communication with PC (log output over console)
+  Serial.begin(115200);                                                                             //Initialising Serial class for communication with PC (log output over console)
   Serial.println("Setup running...");                                                               //Printing "Setup running..." to Serial console
   sensor.begin(4000);                                                                               //Initialising instance of MHZ14A class with timeout of 4000 ms
   sensor.setDebug(true);                                                                            //Enabling debug output to serial console over Serial1 (Serial1 is initialized in method)
