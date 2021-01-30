@@ -1,6 +1,7 @@
 # Syntax Coloring Map For ExampleLibrary
 
 # Datatypes (KEYWORD1)
+MHZ14A    KEYWORD1
 
 # Methods and Functions (KEYWORD2)
 begin KEYWORD2
@@ -10,6 +11,5 @@ calSpanPoint KEYWORD2
 setDebug KEYWORD2
 
 # Instances (KEYWORD2)
-MHZ14A    KEYWORD2
 
 # Constants (LITERAL1)
