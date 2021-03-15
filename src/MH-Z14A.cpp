@@ -19,12 +19,14 @@ MHZ14A::MHZ14A(HardwareSerial &serial, HardwareSerial &logSerial)
     logSer = &logSerial;
 }
 
+#if defined(Serial_)
 MHZ14A::MHZ14A(HardwareSerial &serial, Serial_ &logSerial)
 {
     ser = &serial;
     serIsUSB = true;
     logSerUSB = &logSerial;
 }
+#endif
 
 void MHZ14A::begin(int timeout)
 {
@@ -43,10 +45,19 @@ void MHZ14A::log(byte msg[9])
     if(debug) 
     {
         if(!serIsUSB) for(int i=0; i<9; i++) logSer->print(msg[i], HEX);
-        else for(int i=0; i<9; i++) logSerUSB->print(msg[i], HEX);
-        
+        else
+        {
+            #if defined(Serial_)
+                for(int i=0; i<9; i++) logSerUSB->print(msg[i], HEX);
+            #endif
+        }
         if(!serIsUSB) logSer->println("");
-        else logSerUSB->println("");
+        else
+        {
+            #if defined(Serial_)
+                logSerUSB->println("");
+            #endif
+        } 
     }
 }
 
@@ -92,9 +103,37 @@ void MHZ14A::calZeroPoint(byte sensor = 0x01)
     ser->write(msg, 9);
 }
 
-void MHZ14A::calSpanPoint(byte sensor = 0x01)
+void MHZ14A::calSpanPoint(byte sensor = 0x01, uint8_t span_value_ppm = 2000)
 {
-    byte msg[9] = {0xFF, sensor, 0x88, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    byte span_high = span_value_ppm / 256;
+    byte span_low = span_value_ppm % 256;
+    byte msg[9] = {0xFF, sensor, 0x88, span_high, span_low, 0x00, 0x00, 0x00, 0x00};
+    msg[8] = crc(msg);
+    ser->write(msg, 9);
+}
+
+void MHZ14A::setDetectionRange(byte sensor = 0x01, byte Range[4])
+{
+    byte msg[9] = {0xFF, sensor, 0x99, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    for (int i=4; i<8; i++)
+    {
+        msg[i] = Range[i-4];
+    }
+    msg[8] = crc(msg);
+    ser->write(msg, 9);
+}
+
+void MHZ14A::setAutoCal(byte sensor, bool state)
+{
+    byte msg[9] = {0xFF, sensor, 0x79, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    if (state)
+    {
+        msg[3] = 0xA0;
+    }
+    else
+    {
+        msg[3] = 0x00;
+    }
     msg[8] = crc(msg);
     ser->write(msg, 9);
 }
