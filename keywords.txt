@@ -9,7 +9,13 @@ readConcentrationPPM KEYWORD2
 calZeroPoint KEYWORD2
 calSpanPoint KEYWORD2
 setDebug KEYWORD2
+setDetectionRange KEYWORD2
+setAutoCal KEYWORD2
 
 # Instances (KEYWORD2)
 
 # Constants (LITERAL1)
+
+MR_2000 LITERAL1
+MR_5000 LITERAL1
+MR_10000 LITERAL1
