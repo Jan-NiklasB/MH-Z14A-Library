@@ -9,6 +9,7 @@ void setup()
 {
   Serial.begin(115200);                 //Initialising Serial for communication with PC (log output over console)
   Serial.println("Setup running...");   //Printing "Setup running..." to Serial console
+  Serial1.begin(9600);                  //Initialising Serial1 at 9600 baud for intercom with sensor
   sensor.begin(Serial1, Serial, 4000);  //Initialising instance of MHZ14A class with Serial1 as interface to the sensor and Serial as log output to console, with a sensor timeout of 4000 ms
   
   // Syntax: sensor.begin(SerialCOM to the sensor,(opt.) SerialCOM to console, timeout for the sensor in ms)  
